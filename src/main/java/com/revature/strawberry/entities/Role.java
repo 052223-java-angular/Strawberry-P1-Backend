@@ -1,8 +1,10 @@
 package com.revature.strawberry.entities;
 
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.revature.strawberry.dtos.requests.NewRoleRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,4 +33,9 @@ public class Role {
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<User> users;
+
+    public Role(NewRoleRequest req) {
+        this.id = UUID.randomUUID().toString();
+        this.name = req.getName();
+    }
 }
