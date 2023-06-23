@@ -1,4 +1,4 @@
-package com.revature.strawberry.strawberry;
+package com.revature.strawberry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
