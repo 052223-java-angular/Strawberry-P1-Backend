@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.revature.strawberry.utils.custom_exceptions.InvalidAuthException;
 import com.revature.strawberry.utils.custom_exceptions.ResourceConflictException;
 import com.revature.strawberry.utils.custom_exceptions.RoleNotFoundException;
 import com.revature.strawberry.utils.custom_exceptions.UserNotFoundException;
@@ -30,6 +31,14 @@ public class GlobalExceptionHandler {
         body.put("message", e.getMessage());
         body.put("timestamp", new Date(System.currentTimeMillis()));
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(InvalidAuthException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidAuth(InvalidAuthException e) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", e.getMessage());
+        body.put("timestamp", new Date(System.currentTimeMillis()));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
