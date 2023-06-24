@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.revature.strawberry.dtos.requests.NewLoginRequest;
 import com.revature.strawberry.dtos.requests.NewRegisterRequest;
+import com.revature.strawberry.dtos.responses.Principal;
 import com.revature.strawberry.entities.Role;
 import com.revature.strawberry.entities.User;
 import com.revature.strawberry.repositories.UserRepository;
@@ -23,14 +24,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
-    // TODO: Implement login method
-    public User login(NewLoginRequest req) {
+    public Principal login(NewLoginRequest req) {
         // find user by username
         User foundUser = findByUsername(req.getUsername());
 
         // check if password matches
         if (BCrypt.checkpw(req.getPassword(), foundUser.getPassword())) {
-            return foundUser;
+            return new Principal(foundUser);
         }
 
         throw new InvalidAuthException("Invalid credentials");

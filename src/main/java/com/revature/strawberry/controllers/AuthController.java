@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.strawberry.dtos.requests.NewLoginRequest;
 import com.revature.strawberry.dtos.requests.NewRegisterRequest;
+import com.revature.strawberry.dtos.responses.Principal;
+import com.revature.strawberry.services.JwtService;
 import com.revature.strawberry.services.UserService;
 import com.revature.strawberry.utils.custom_exceptions.InvalidAuthException;
 import com.revature.strawberry.utils.custom_exceptions.ResourceConflictException;
@@ -21,6 +24,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody NewRegisterRequest req) {
@@ -53,5 +57,20 @@ public class AuthController {
         userService.register(req);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody NewLoginRequest req) {
+        // get the principal (user)
+        Principal principal = userService.login(req);
+
+        // generate a token
+        String token = jwtService.generateToken(principal);
+
+        // set the token on the principal
+        principal.setToken(token);
+
+        // return the principal
+        return ResponseEntity.status(HttpStatus.OK).body(principal);
     }
 }
