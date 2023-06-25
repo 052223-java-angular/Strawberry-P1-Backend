@@ -53,12 +53,13 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<Category> getCategoryByName(@PathVariable String name) {
+        System.out.println("name: " + name);
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.findCategoryByName(name));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.findCategoryById(id));
     }
