@@ -1,8 +1,10 @@
 package com.revature.strawberry.entities;
 
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.revature.strawberry.dtos.requests.NewCategoryRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,4 +32,9 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @JsonManagedReference
     private Set<Product> products;
+
+    public Category(NewCategoryRequest req) {
+        this.id = UUID.randomUUID().toString();
+        this.name = req.getName();
+    }
 }

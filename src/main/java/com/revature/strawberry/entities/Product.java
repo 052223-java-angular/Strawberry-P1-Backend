@@ -1,9 +1,11 @@
 package com.revature.strawberry.entities;
 
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.revature.strawberry.dtos.requests.NewProductRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,4 +52,14 @@ public class Product {
     @JoinColumn(name = "category_id")
     @JsonBackReference
     private Category category;
+
+    public Product(NewProductRequest req, Category category) {
+        this.id = UUID.randomUUID().toString();
+        this.name = req.getName();
+        this.description = req.getDescription();
+        this.price = req.getPrice();
+        this.image = req.getImage();
+        this.stock = req.getStock();
+        this.category = category;
+    }
 }
