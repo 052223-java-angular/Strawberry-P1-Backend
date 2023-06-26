@@ -1,6 +1,9 @@
 package com.revature.strawberry.entities;
 
+import java.util.UUID;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.revature.strawberry.dtos.requests.NewCartItemRequest;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,4 +41,12 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     @JsonBackReference
     private Product product;
+
+    public CartItem(NewCartItemRequest req, Product product, Cart cart) {
+        this.id = UUID.randomUUID().toString();
+        this.quanity = req.getQuantity();
+        this.price = req.getPrice();
+        this.product = product;
+        this.cart = cart;
+    }
 }

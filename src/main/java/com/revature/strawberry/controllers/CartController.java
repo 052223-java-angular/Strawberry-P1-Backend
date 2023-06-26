@@ -9,26 +9,23 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.strawberry.dtos.requests.NewRoleRequest;
-import com.revature.strawberry.entities.Role;
+import com.revature.strawberry.dtos.requests.NewCartItemRequest;
+import com.revature.strawberry.services.CartItemService;
 import com.revature.strawberry.services.JwtService;
-import com.revature.strawberry.services.RoleService;
-import com.revature.strawberry.utils.custom_exceptions.AdminPermissionException;
 import com.revature.strawberry.utils.custom_exceptions.InvalidTokenException;
-import com.revature.strawberry.utils.custom_exceptions.ResourceConflictException;
 
 import lombok.AllArgsConstructor;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/cart")
 @AllArgsConstructor
-public class RoleController {
-    private final RoleService roleService;
+public class CartController {
+    private final CartItemService cartItemService;
     private final JwtService jwtService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Role> createRole(@RequestBody NewRoleRequest req, @RequestHeader("auth-token") String token) {
+    @PostMapping("/add")
+    public ResponseEntity<?> add(@RequestBody NewCartItemRequest req, @RequestHeader("auth-token") String token) {
         // get token from header
         if (token == null || token.isEmpty()) {
             throw new InvalidTokenException("No token provided");
@@ -42,16 +39,6 @@ public class RoleController {
             throw new InvalidTokenException("Invalid token");
         }
 
-        // validate user role
-        if (!userRole.equals("ADMIN")) {
-            throw new AdminPermissionException("You are not authorized to create a category");
-        }
-
-        if (!roleService.isUniqueRole(req.getName())) {
-            throw new ResourceConflictException(req.getName() + " role already exists.");
-        }
-
-        roleService.createRole(req);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartItemService.add(req));
     }
 }
