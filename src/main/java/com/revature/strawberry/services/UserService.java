@@ -84,4 +84,8 @@ public class UserService {
 
         throw new UserNotFoundException("User not found");
     }
+
+    public User findById(String userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
 }

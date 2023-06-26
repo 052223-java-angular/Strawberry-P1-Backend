@@ -1,6 +1,7 @@
 package com.revature.strawberry.entities;
 
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -30,4 +31,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     @JsonManagedReference
     private Set<CartItem> cartItems;
+
+    public Cart(User user) {
+        this.id = UUID.randomUUID().toString();
+        this.user = user;
+    }
 }

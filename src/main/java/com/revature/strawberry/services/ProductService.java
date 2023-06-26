@@ -24,8 +24,8 @@ public class ProductService {
         return productRepository.save(newProduct);
     }
 
-    public Product getProductById(String id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ProductNotFoundException("Product " + id + " not found"));
+    public Product findById(String productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product " + productId + " not found"));
     }
 }
